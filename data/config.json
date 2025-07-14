@@ -1,0 +1,39 @@
+{
+    "pasta_base": "Z:/Fiscal/Simples Nacional/",
+    "empresas": [
+        {
+            "cnpj": "13230092000148",
+            "nome": "FERREIRA & SANTANA MAT DE CONSTR LTDA",
+            "aliquota_interna_padrao": 20.5,
+            "mva_cnae_padrao": 45.0
+        }
+    ],
+    "aliquotas_interestaduais": {
+        "AC": 12.0,
+        "AL": 12.0,
+        "AM": 12.0,
+        "AP": 12.0,
+        "BA": 12.0,
+        "CE": 12.0,
+        "DF": 12.0,
+        "ES": 12.0,
+        "GO": 12.0,
+        "MA": 12.0,
+        "MT": 12.0,
+        "MS": 12.0,
+        "MG": 7.0,
+        "PA": 12.0,
+        "PB": 12.0,
+        "PR": 7.0,
+        "PE": 20.5,
+        "PI": 12.0,
+        "RN": 12.0,
+        "RJ": 7.0,
+        "RO": 12.0,
+        "RR": 12.0,
+        "SC": 7.0,
+        "SP": 7.0,
+        "SE": 12.0,
+        "TO": 12.0
+    }
+}

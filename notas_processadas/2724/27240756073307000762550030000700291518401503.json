@@ -1,0 +1,385 @@
+{
+  "identificacao": {
+    "chave": "27240756073307000762550030000700291518401503",
+    "numero": "70029",
+    "serie": "3",
+    "data_emissao": "2024-07-31T14:59:00-03:00",
+    "modelo": "55",
+    "tipo_operacao": "VENDA"
+  },
+  "emitente": {
+    "cnpj": "56073307000762",
+    "nome": "ZD ALIMENTOS S.A.",
+    "fantasia": "GRUPO ZDA",
+    "endereco": {
+      "logradouro": "RUA 01",
+      "numero": "311",
+      "complemento": "GALPAO 7 GALPAO 8 PARTE B",
+      "bairro": "CIDADE UNIVERSITARIA",
+      "municipio": "MACEIO",
+      "uf": "AL",
+      "cep": "57073021",
+      "telefone": "(14) 3408-1200"
+    },
+    "ie": "242132251",
+    "crt": "3"
+  },
+  "destinatario": {
+    "cnpj": "32208223000135",
+    "nome": "BOMBONIERE SAO FRANCISCO LTDA (C-139792-01)",
+    "endereco": {
+      "logradouro": "R CEL NECO DE ALMEIDA",
+      "numero": "210",
+      "bairro": "CNTRO",
+      "municipio": "CAPOEIRAS",
+      "uf": "PE",
+      "cep": "55365000",
+      "telefone": "(87) 9925-5740"
+    },
+    "ie": "080472940",
+    "email": "geniogicapoeiras@hotmail.com;rodrigo@boratransportes.com.br"
+  },
+  "produtos": [
+    {
+      "item": "1",
+      "codigo": "021400",
+      "ean": "17896066762613",
+      "descricao": "BOMBONS SORTIDOS 9G 30X180G",
+      "ncm": "18069000",
+      "cest": "1700700",
+      "cfop": "6102",
+      "unidade": "CX",
+      "quantidade": 10.0,
+      "valor_unitario": 124.767,
+      "valor_total": 1247.67,
+      "impostos": {
+        "icms": {
+          "cst": "00",
+          "base": 1247.67,
+          "aliquota": 12.0,
+          "valor": 149.72
+        },
+        "ipi": {
+          "cst": "50",
+          "base": 1247.67,
+          "aliquota": 3.25,
+          "valor": 40.55
+        },
+        "pis": {
+          "cst": "01",
+          "base": 1097.95,
+          "aliquota": 1.65,
+          "valor": 18.12
+        },
+        "cofins": {
+          "cst": "01",
+          "base": 1097.95,
+          "aliquota": 7.6,
+          "valor": 83.44
+        }
+      }
+    },
+    {
+      "item": "2",
+      "codigo": "021631",
+      "ean": "17896066768325",
+      "descricao": "BEL BY COCO 8X24X25G",
+      "ncm": "18063120",
+      "cest": "1700202",
+      "cfop": "6102",
+      "unidade": "CX",
+      "quantidade": 7.0,
+      "valor_unitario": 174.74857143,
+      "valor_total": 1223.24,
+      "impostos": {
+        "icms": {
+          "cst": "00",
+          "base": 1223.24,
+          "aliquota": 12.0,
+          "valor": 146.79
+        },
+        "ipi": {
+          "cst": "50",
+          "base": 1223.24,
+          "aliquota": 3.25,
+          "valor": 39.75
+        },
+        "pis": {
+          "cst": "01",
+          "base": 1076.45,
+          "aliquota": 1.65,
+          "valor": 17.76
+        },
+        "cofins": {
+          "cst": "01",
+          "base": 1076.45,
+          "aliquota": 7.6,
+          "valor": 81.81
+        }
+      }
+    },
+    {
+      "item": "3",
+      "codigo": "021635",
+      "ean": "17896066768363",
+      "descricao": "MORANGUETE 8X24X25G",
+      "ncm": "18063120",
+      "cest": "1700202",
+      "cfop": "6102",
+      "unidade": "CX",
+      "quantidade": 5.0,
+      "valor_unitario": 131.858,
+      "valor_total": 659.29,
+      "impostos": {
+        "icms": {
+          "cst": "00",
+          "base": 659.29,
+          "aliquota": 12.0,
+          "valor": 79.11
+        },
+        "ipi": {
+          "cst": "50",
+          "base": 659.29,
+          "aliquota": 3.25,
+          "valor": 21.43
+        },
+        "pis": {
+          "cst": "01",
+          "base": 580.18,
+          "aliquota": 1.65,
+          "valor": 9.57
+        },
+        "cofins": {
+          "cst": "01",
+          "base": 580.18,
+          "aliquota": 7.6,
+          "valor": 44.1
+        }
+      }
+    },
+    {
+      "item": "4",
+      "codigo": "021633",
+      "ean": "17896066768349",
+      "descricao": "BEL MARSHMALLOW COM CARAMELO 8X24X30G",
+      "ncm": "18063120",
+      "cest": "1700202",
+      "cfop": "6102",
+      "unidade": "CX",
+      "quantidade": 4.0,
+      "valor_unitario": 174.7475,
+      "valor_total": 698.99,
+      "impostos": {
+        "icms": {
+          "cst": "00",
+          "base": 698.99,
+          "aliquota": 12.0,
+          "valor": 83.88
+        },
+        "ipi": {
+          "cst": "50",
+          "base": 698.99,
+          "aliquota": 3.25,
+          "valor": 22.72
+        },
+        "pis": {
+          "cst": "01",
+          "base": 615.11,
+          "aliquota": 1.65,
+          "valor": 10.15
+        },
+        "cofins": {
+          "cst": "01",
+          "base": 615.11,
+          "aliquota": 7.6,
+          "valor": 46.75
+        }
+      }
+    },
+    {
+      "item": "5",
+      "codigo": "021634",
+      "ean": "17896066768356",
+      "descricao": "BEL MEGA 8X24X30G",
+      "ncm": "18063120",
+      "cest": "1700202",
+      "cfop": "6102",
+      "unidade": "CX",
+      "quantidade": 2.0,
+      "valor_unitario": 174.75,
+      "valor_total": 349.5,
+      "impostos": {
+        "icms": {
+          "cst": "00",
+          "base": 349.5,
+          "aliquota": 12.0,
+          "valor": 41.94
+        },
+        "ipi": {
+          "cst": "50",
+          "base": 349.5,
+          "aliquota": 3.25,
+          "valor": 11.36
+        },
+        "pis": {
+          "cst": "01",
+          "base": 307.56,
+          "aliquota": 1.65,
+          "valor": 5.07
+        },
+        "cofins": {
+          "cst": "01",
+          "base": 307.56,
+          "aliquota": 7.6,
+          "valor": 23.37
+        }
+      }
+    },
+    {
+      "item": "6",
+      "codigo": "021265",
+      "ean": "17896066766512",
+      "descricao": "BARRA GOLDEN 23G AO LEITE 9X20UN",
+      "ncm": "18063220",
+      "cest": "1700301",
+      "cfop": "6102",
+      "unidade": "CX",
+      "quantidade": 7.0,
+      "valor_unitario": 113.20857143,
+      "valor_total": 792.46,
+      "impostos": {
+        "icms": {
+          "cst": "00",
+          "base": 792.46,
+          "aliquota": 12.0,
+          "valor": 95.1
+        },
+        "ipi": {
+          "cst": "50",
+          "base": 792.46,
+          "aliquota": 3.25,
+          "valor": 25.75
+        },
+        "pis": {
+          "cst": "01",
+          "base": 697.36,
+          "aliquota": 1.65,
+          "valor": 11.51
+        },
+        "cofins": {
+          "cst": "01",
+          "base": 697.36,
+          "aliquota": 7.6,
+          "valor": 53.0
+        }
+      }
+    },
+    {
+      "item": "7",
+      "codigo": "021267",
+      "ean": "17896066766536",
+      "descricao": "BARRA GOLDEN 23G MESCLADO 9X20UN",
+      "ncm": "18063220",
+      "cest": "1700301",
+      "cfop": "6102",
+      "unidade": "CX",
+      "quantidade": 3.0,
+      "valor_unitario": 113.21,
+      "valor_total": 339.63,
+      "impostos": {
+        "icms": {
+          "cst": "00",
+          "base": 339.63,
+          "aliquota": 12.0,
+          "valor": 40.75
+        },
+        "ipi": {
+          "cst": "50",
+          "base": 339.63,
+          "aliquota": 3.25,
+          "valor": 11.04
+        },
+        "pis": {
+          "cst": "01",
+          "base": 298.88,
+          "aliquota": 1.65,
+          "valor": 4.93
+        },
+        "cofins": {
+          "cst": "01",
+          "base": 298.88,
+          "aliquota": 7.6,
+          "valor": 22.72
+        }
+      }
+    }
+  ],
+  "totais": {
+    "produtos": 5310.78,
+    "icms": 637.29,
+    "ipi": 172.6,
+    "pis": 77.11,
+    "cofins": 355.19,
+    "frete": 0.0,
+    "seguro": 0.0,
+    "desconto": 0.0,
+    "total_nota": 5483.38
+  },
+  "transportadora": {
+    "mod_frete": "0",
+    "transportadora": {
+      "cnpj": "05504835000607",
+      "nome": "BORA TRANSPORTES LTDA  - AL",
+      "ie": "244411387",
+      "endereco": {
+        "logradouro": "V SECUNDARIA 2 (DISTRITO INDUSTRIAL),471",
+        "municipio": "MACEIO",
+        "uf": "AL"
+      }
+    },
+    "volumes": {
+      "quantidade": 38,
+      "especie": "CAIXAS",
+      "peso_liquido": 192.36,
+      "peso_bruto": 219.52
+    }
+  },
+  "pagamento": {
+    "forma": "15",
+    "valor": 5483.38,
+    "duplicatas": [
+      {
+        "numero": "001",
+        "vencimento": "2024-08-26",
+        "valor": 2741.69
+      },
+      {
+        "numero": "002",
+        "vencimento": "2024-09-02",
+        "valor": 2741.69
+      }
+    ]
+  },
+  "informacoes_adicionais": {
+    "observacoes": "CONFERIR PRODUTOS NO RECEBIMENTO, NAO ACEITAMOS RECLAMACOES POSTERIORES !  - PRACA DE PAGAMENTO: MARILIA SP//// Vendedor 001376 JEFFERSON CARVA                /(81) 99713-2131//Pedido 744834 - Carga 242240- Cubicagem: 0,5994771 m3//ASSUNTOS SOBRE DEVOLUCOES, POR GENTILEZA, ENTRAR EM CONTATO (14) 2105-1210//email: devolucao@zdalimentos.com.br",
+    "responsavel_tecnico": {
+      "cnpj": "53113791000122",
+      "contato": "Rodrigo de Almeida Sartorio",
+      "email": "resp_tecnico_dfe_protheus@totvs.com.br",
+      "telefone": "(11) 2859-3904"
+    }
+  },
+  "calculos": {
+    "icms_fronteira": [],
+    "cesta_basica": [
+      {
+        "item": "1",
+        "descricao": "BOMBONS SORTIDOS 9G 30X180G",
+        "ncm": "18069000",
+        "cest": "1700700",
+        "valor": 1247.67,
+        "beneficio": "Isenção/Redução de ICMS"
+      }
+    ]
+  }
+}

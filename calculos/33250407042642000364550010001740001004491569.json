@@ -1,0 +1,172 @@
+{
+  "calculos": [
+    {
+      "data": "2025-07-11T13:07:16",
+      "nota": "33250407042642000364550010001740001004491569",
+      "parametros": {
+        "aliq_interestadual": "7.0",
+        "aliq_interna": "20.5",
+        "mva_original": "1",
+        "mva_cnae": "2",
+        "difal": "3",
+        "aliq_credito": "4",
+        "aliq_reducao": "5",
+        "considerar_desconto": true,
+        "usar_credito_manual": false
+      },
+      "resultados": {
+        "icms_st": "R$ 0,00",
+        "icms_tributado": "R$ 0,00",
+        "icms_uso_consumo": "R$ 0,00",
+        "icms_reducao": "R$ 0,00"
+      }
+    },
+    {
+      "data": "2025-07-11T13:14:51",
+      "nota": "33250407042642000364550010001740001004491569",
+      "parametros": {
+        "aliq_interestadual": "7.0",
+        "aliq_interna": "20.5",
+        "mva_original": "1",
+        "mva_cnae": "2",
+        "difal": "3",
+        "aliq_credito": "4",
+        "aliq_reducao": "5",
+        "considerar_desconto": true,
+        "usar_credito_manual": false
+      },
+      "resultados": {
+        "icms_st": "R$ 24,348.36",
+        "icms_tributado": "R$ 26,470.92",
+        "icms_uso_consumo": "R$ 12,174.18",
+        "icms_reducao": "R$ 7,941.28"
+      }
+    },
+    {
+      "data": "2025-07-11T13:16:00",
+      "nota": "33250407042642000364550010001740001004491569",
+      "parametros": {
+        "aliq_interestadual": "7.0",
+        "aliq_interna": "20.5",
+        "mva_original": "1",
+        "mva_cnae": "2",
+        "difal": "3",
+        "aliq_credito": "4",
+        "aliq_reducao": "5",
+        "considerar_desconto": true,
+        "usar_credito_manual": false
+      },
+      "resultados": {
+        "icms_st": "R$ 24,348.36",
+        "icms_tributado": "R$ 26,470.92",
+        "icms_uso_consumo": "R$ 12,174.18",
+        "icms_reducao": "R$ 7,941.28"
+      }
+    },
+    {
+      "data": "2025-07-11T14:41:10",
+      "nota": "33250407042642000364550010001740001004491569",
+      "parametros": {
+        "aliq_interestadual": "7.0",
+        "aliq_interna": "20.5",
+        "mva_original": "1",
+        "mva_cnae": "2",
+        "difal": "3",
+        "aliq_credito": "4",
+        "aliq_reducao": "5",
+        "considerar_desconto": true,
+        "usar_credito_manual": false
+      },
+      "resultados": {
+        "icms_st": "R$ 24,348.36",
+        "icms_tributado": "R$ 26,470.92",
+        "icms_uso_consumo": "R$ 12,174.18",
+        "icms_reducao": "R$ 7,941.28"
+      }
+    },
+    {
+      "data": "2025-07-11T15:33:17",
+      "nota": "33250407042642000364550010001740001004491569",
+      "parametros": {
+        "aliq_interestadual": "7.0",
+        "aliq_interna": "20.5",
+        "mva_original": "1",
+        "mva_cnae": "2",
+        "difal": "3",
+        "aliq_credito": "4",
+        "aliq_reducao": "5",
+        "considerar_desconto": true,
+        "usar_credito_manual": false
+      },
+      "resultados": {
+        "icms_st": "R$ 24,348.36",
+        "icms_tributado": "R$ 26,470.92",
+        "icms_uso_consumo": "R$ 12,174.18",
+        "icms_reducao": "R$ 7,941.28"
+      }
+    },
+    {
+      "data": "2025-07-11T16:14:17",
+      "nota": "33250407042642000364550010001740001004491569",
+      "parametros": {
+        "aliq_interestadual": "7.0",
+        "aliq_interna": "20.5",
+        "mva_original": "1",
+        "mva_cnae": "2",
+        "difal": "3",
+        "aliq_credito": "4",
+        "aliq_reducao": "5",
+        "considerar_desconto": true,
+        "usar_credito_manual": false
+      },
+      "resultados": {
+        "icms_st": "R$ 24,348.36",
+        "icms_tributado": "R$ 26,470.92",
+        "icms_uso_consumo": "R$ 12,174.18",
+        "icms_reducao": "R$ 7,941.28"
+      }
+    },
+    {
+      "data": "2025-07-11T16:26:03",
+      "nota": "33250407042642000364550010001740001004491569",
+      "parametros": {
+        "aliq_interestadual": "7.0",
+        "aliq_interna": "20.5",
+        "mva_original": "1",
+        "mva_cnae": "2",
+        "difal": "3",
+        "aliq_credito": "4",
+        "aliq_reducao": "5",
+        "considerar_desconto": true,
+        "usar_credito_manual": false
+      },
+      "resultados": {
+        "icms_st": "R$ 24,348.36",
+        "icms_tributado": "R$ 26,470.92",
+        "icms_uso_consumo": "R$ 12,174.18",
+        "icms_reducao": "R$ 7,941.28"
+      }
+    },
+    {
+      "data": "2025-07-14T13:31:24",
+      "nota": "33250407042642000364550010001740001004491569",
+      "parametros": {
+        "aliq_interestadual": "7.0",
+        "aliq_interna": "20.5",
+        "mva_original": "",
+        "mva_cnae": "",
+        "difal": "",
+        "aliq_credito": "",
+        "aliq_reducao": "",
+        "considerar_desconto": true,
+        "usar_credito_manual": false
+      },
+      "resultados": {
+        "icms_st": "",
+        "icms_tributado": "",
+        "icms_uso_consumo": "",
+        "icms_reducao": ""
+      }
+    }
+  ]
+}

@@ -1,0 +1,25 @@
+{
+  "calculos": [
+    {
+      "data": "2025-07-14T13:30:27",
+      "nota": "28250407378783000190550010004805891470512432",
+      "parametros": {
+        "aliq_interestadual": "12.0",
+        "aliq_interna": "20.5",
+        "mva_original": "1",
+        "mva_cnae": "2",
+        "difal": "3",
+        "aliq_credito": "4",
+        "aliq_reducao": "5",
+        "considerar_desconto": true,
+        "usar_credito_manual": false
+      },
+      "resultados": {
+        "icms_st": "R$ 1,254.54",
+        "icms_tributado": "R$ 1,444.67",
+        "icms_uso_consumo": "R$ 627.27",
+        "icms_reducao": "R$ 433.40"
+      }
+    }
+  ]
+}

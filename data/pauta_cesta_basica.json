@@ -1,0 +1,46 @@
+{
+    "feijão": {
+        "valor": 8.50,
+        "unidade": "kg",
+        "carga_tributaria": {
+            "Norte/Nordeste/Centro-Oeste/ES": 5.0,
+            "Sul/Sudeste": 10.0,
+            "acima_5kg": 2.5
+        }
+    },
+    "farinha de mandioca": {
+        "valor": 3.20,
+        "unidade": "kg",
+        "carga_tributaria": 0.0
+    },
+    "leite em pó": {
+        "valor": 25.00,
+        "unidade": "kg",
+        "carga_tributaria": 2.5
+    },
+    "sardinha em lata": {
+        "valor": 6.00,
+        "unidade": "un",
+        "carga_tributaria": 2.5
+    },
+    "charque": {
+        "valor": 30.00,
+        "unidade": "kg",
+        "carga_tributaria": 2.5
+    },
+    "fubá de milho": {
+        "valor": 4.50,
+        "unidade": "kg",
+        "carga_tributaria": 2.5
+    },
+    "sal de cozinha": {
+        "valor": 2.00,
+        "unidade": "kg",
+        "carga_tributaria": 2.5
+    },
+    "batata inglesa": {
+        "valor": 3.00,
+        "unidade": "kg",
+        "carga_tributaria": 2.5
+    }
+}

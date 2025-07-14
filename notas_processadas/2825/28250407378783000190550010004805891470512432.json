@@ -1,0 +1,152 @@
+{
+  "identificacao": {
+    "chave": "28250407378783000190550010004805891470512432",
+    "numero": "480589",
+    "serie": "1",
+    "data_emissao": "2025-04-17T00:00:00-03:00",
+    "modelo": "55",
+    "tipo_operacao": "VENDA DE PRODUCAO DO ESTABELECIMENTO"
+  },
+  "emitente": {
+    "cnpj": "07378783000190",
+    "nome": "CERAMICA SERRA AZUL LTDA.",
+    "fantasia": "CERAMICA SERRA AZUL LTDA.",
+    "endereco": {
+      "logradouro": "AVENIDA CARMELO FIOR",
+      "numero": "S/N",
+      "complemento": "",
+      "bairro": "DIS-DIST.IND.SOCORRO",
+      "municipio": "N. SENHORA DO SOCORRO",
+      "uf": "SE",
+      "cep": "49152388",
+      "telefone": "(79) 3114-3050"
+    },
+    "ie": "271130199",
+    "crt": "3"
+  },
+  "destinatario": {
+    "cnpj": "13230092000148",
+    "nome": "FERREIRA & SANTANA MAT DE CONSTR LTDA",
+    "endereco": {
+      "logradouro": "RODOVIA BR 423",
+      "numero": "SN",
+      "bairro": "DOM THIAGO POSTMA",
+      "municipio": "GARANHUNS",
+      "uf": "PE",
+      "cep": "55293970",
+      "telefone": "(87) 3762-1710"
+    },
+    "ie": "043842615",
+    "email": "armazem_escritorio@hotmail.com;"
+  },
+  "produtos": [
+    {
+      "item": "1",
+      "codigo": "563431",
+      "ean": "7899719800000",
+      "descricao": "PISO CERAMICO 540X540MMHD OLIMPO AD A",
+      "ncm": "69072300",
+      "cest": "1003000",
+      "cfop": "6101",
+      "unidade": "M2",
+      "quantidade": 335.36,
+      "valor_unitario": 16.65,
+      "valor_total": 5583.74,
+      "impostos": {
+        "icms": {
+          "cst": "00",
+          "base": 5583.74,
+          "aliquota": 12.0,
+          "valor": 670.05
+        },
+        "ipi": {
+          "cst": "50",
+          "base": 5583.74,
+          "aliquota": 0.65,
+          "valor": 36.29
+        },
+        "pis": {
+          "cst": "01",
+          "base": 4913.69,
+          "aliquota": 1.65,
+          "valor": 81.08
+        },
+        "cofins": {
+          "cst": "01",
+          "base": 4913.69,
+          "aliquota": 7.6,
+          "valor": 373.44
+        }
+      }
+    }
+  ],
+  "totais": {
+    "produtos": 5583.74,
+    "icms": 670.05,
+    "ipi": 36.29,
+    "pis": 81.08,
+    "cofins": 373.44,
+    "frete": 0.0,
+    "seguro": 0.0,
+    "desconto": 0.0,
+    "total_nota": 5620.03
+  },
+  "transportadora": {
+    "mod_frete": "1",
+    "transportadora": {
+      "cnpj": "07741216000157",
+      "nome": "AUREO VITOR VILELA SILVA",
+      "ie": "272277401",
+      "endereco": {
+        "logradouro": "AV. GENERAL EUCLIDES FIGUEIREDO, 986 LOJA COMERCIAL FORRO",
+        "municipio": "ARACAJU",
+        "uf": "SE"
+      }
+    },
+    "volumes": {
+      "quantidade": 128,
+      "especie": "Caixa(s)",
+      "peso_liquido": 4209.664,
+      "peso_bruto": 4265.02
+    }
+  },
+  "pagamento": {
+    "forma": "14",
+    "valor": 5620.03,
+    "duplicatas": [
+      {
+        "numero": "001",
+        "vencimento": "2025-05-15",
+        "valor": 1153.04
+      },
+      {
+        "numero": "002",
+        "vencimento": "2025-06-12",
+        "valor": 1116.75
+      },
+      {
+        "numero": "003",
+        "vencimento": "2025-07-10",
+        "valor": 1116.75
+      },
+      {
+        "numero": "004",
+        "vencimento": "2025-08-07",
+        "valor": 1116.75
+      },
+      {
+        "numero": "005",
+        "vencimento": "2025-09-04",
+        "valor": 1116.74
+      }
+    ]
+  },
+  "informacoes_adicionais": {
+    "observacoes": "MATERIAL ENTREGUE EM PALLET  XML/DANFE DISPONIVEL EM HTTP://WWW.CCFONLINE.COM.BR/NFE/  PRACA DE PAGAMENTO: ESTRADA MUNICIPAL CARMELO FIOR, S/N, KM 4,5 - BAIRRO DO BARRO PRETO, CORDEIROPOLIS/SP, CEP: 13.490-970  MOTORISTA: RODRIGO VIEIRA CARVALHO CIDADE: ARACAJU-SE CPF: 05181939503  SEU PEDIDO NO AR25041",
+    "responsavel_tecnico": null
+  },
+  "calculos": {
+    "icms_fronteira": [],
+    "cesta_basica": []
+  }
+}
