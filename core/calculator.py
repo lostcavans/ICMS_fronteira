@@ -74,3 +74,23 @@ class ICMSCalculator:
             return icms_destacado * (impostos.aliquota_credito/100)
         
         return icms_destacado
+    
+    @staticmethod
+    def calcular_uso_consumo(produto: Produto, impostos: Impostos) -> float:
+        """
+        Calcula o ICMS para uso e consumo conforme fórmula:
+        (base * (1 - 20,5%)) * (aliquota interna - aliquota interestadual)
+        Onde base = valor_total + frete + ipi + seguro
+        """
+        base = (produto.valor_total + 
+               produto.valor_frete + 
+               produto.valor_ipi + 
+               produto.valor_seguro)
+        
+        # Aplica a redução de 20,5% sobre a base
+        base_reduzida = base * (1 - 0.205)
+        
+        # Calcula a diferença de alíquotas
+        diferenca_aliquotas = (impostos.aliquota_interna - impostos.aliquota_interestadual) / 100
+        
+        return base_reduzida * diferenca_aliquotas

@@ -113,6 +113,192 @@
           "icms_tributado": 11065.0
         }
       ]
+    },
+    {
+      "data": "2025-07-25T15:18:58",
+      "nota": "27240756073307000762550030000700291518401503",
+      "parametros": {
+        "aliq_interestadual": "12.0",
+        "aliq_interna": "1",
+        "mva_original": "2",
+        "mva_cnae": "3",
+        "difal": "4",
+        "aliq_credito": "5",
+        "aliq_reducao": "6",
+        "considerar_desconto": true,
+        "usar_credito_manual": false
+      },
+      "resultados": {
+        "icms_st": "R$ 541.13",
+        "icms_tributado": "R$ 922.55",
+        "icms_uso_consumo": "R$ 270.57",
+        "icms_reducao": "R$ 276.76"
+      },
+      "produtos": [
+        {
+          "item": "1",
+          "descricao": "BOMBONS SORTIDOS 9G 30X180G",
+          "ncm": "18069000",
+          "cest": "1700700",
+          "valor_total": 1.24767,
+          "valor_icms": 14972.0,
+          "icms_st": 157.0,
+          "icms_tributado": 180.0
+        },
+        {
+          "item": "2",
+          "descricao": "BEL BY COCO 8X24X25G",
+          "ncm": "18063120",
+          "cest": "1700202",
+          "valor_total": 1.22324,
+          "valor_icms": 14679.0,
+          "icms_st": 157.0,
+          "icms_tributado": 180.0
+        },
+        {
+          "item": "3",
+          "descricao": "MORANGUETE 8X24X25G",
+          "ncm": "18063120",
+          "cest": "1700202",
+          "valor_total": 65929.0,
+          "valor_icms": 7911.0,
+          "icms_st": 12466.0,
+          "icms_tributado": 21306.0
+        },
+        {
+          "item": "4",
+          "descricao": "BEL MARSHMALLOW COM CARAMELO 8X24X30G",
+          "ncm": "18063120",
+          "cest": "1700202",
+          "valor_total": 69899.0,
+          "valor_icms": 8388.0,
+          "icms_st": 13204.0,
+          "icms_tributado": 22575.0
+        },
+        {
+          "item": "5",
+          "descricao": "BEL MEGA 8X24X30G",
+          "ncm": "18063120",
+          "cest": "1700202",
+          "valor_total": 34950.0,
+          "valor_icms": 4194.0,
+          "icms_st": 6680.0,
+          "icms_tributado": 11378.0
+        },
+        {
+          "item": "6",
+          "descricao": "BARRA GOLDEN 23G AO LEITE 9X20UN",
+          "ncm": "18063220",
+          "cest": "1700301",
+          "valor_total": 79246.0,
+          "valor_icms": 9510.0,
+          "icms_st": 14949.0,
+          "icms_tributado": 25570.0
+        },
+        {
+          "item": "7",
+          "descricao": "BARRA GOLDEN 23G MESCLADO 9X20UN",
+          "ncm": "18063220",
+          "cest": "1700301",
+          "valor_total": 33963.0,
+          "valor_icms": 4075.0,
+          "icms_st": 6500.0,
+          "icms_tributado": 11065.0
+        }
+      ]
+    },
+    {
+      "data": "2025-07-25T15:29:06",
+      "nota": "27240756073307000762550030000700291518401503",
+      "parametros": {
+        "aliq_interestadual": "12.0",
+        "aliq_interna": "1",
+        "mva_original": "2",
+        "mva_cnae": "3",
+        "difal": "4",
+        "aliq_credito": "5",
+        "aliq_reducao": "2",
+        "considerar_desconto": true,
+        "usar_credito_manual": false
+      },
+      "resultados": {
+        "icms_st": "R$ 1,904.24",
+        "icms_tributado": "R$ 2,285.65",
+        "icms_uso_consumo": "R$ 952.12",
+        "icms_reducao": "R$ 685.70"
+      },
+      "produtos": [
+        {
+          "item": "1",
+          "descricao": "BOMBONS SORTIDOS 9G 30X180G",
+          "ncm": "18069000",
+          "cest": "1700700",
+          "valor_total": 1.24767,
+          "valor_icms": 14972.0,
+          "icms_st": 157.0,
+          "icms_tributado": 181.0
+        },
+        {
+          "item": "2",
+          "descricao": "BEL BY COCO 8X24X25G",
+          "ncm": "18063120",
+          "cest": "1700202",
+          "valor_total": 1.22324,
+          "valor_icms": 14679.0,
+          "icms_st": 157.0,
+          "icms_tributado": 181.0
+        },
+        {
+          "item": "3",
+          "descricao": "MORANGUETE 8X24X25G",
+          "ncm": "18063120",
+          "cest": "1700202",
+          "valor_total": 65929.0,
+          "valor_icms": 7911.0,
+          "icms_st": 44110.0,
+          "icms_tributado": 52950.0
+        },
+        {
+          "item": "4",
+          "descricao": "BEL MARSHMALLOW COM CARAMELO 8X24X30G",
+          "ncm": "18063120",
+          "cest": "1700202",
+          "valor_total": 69899.0,
+          "valor_icms": 8388.0,
+          "icms_st": 46756.0,
+          "icms_tributado": 56127.0
+        },
+        {
+          "item": "5",
+          "descricao": "BEL MEGA 8X24X30G",
+          "ncm": "18063120",
+          "cest": "1700202",
+          "valor_total": 34950.0,
+          "valor_icms": 4194.0,
+          "icms_st": 23456.0,
+          "icms_tributado": 28154.0
+        },
+        {
+          "item": "6",
+          "descricao": "BARRA GOLDEN 23G AO LEITE 9X20UN",
+          "ncm": "18063220",
+          "cest": "1700301",
+          "valor_total": 79246.0,
+          "valor_icms": 9510.0,
+          "icms_st": 52987.0,
+          "icms_tributado": 63608.0
+        },
+        {
+          "item": "7",
+          "descricao": "BARRA GOLDEN 23G MESCLADO 9X20UN",
+          "ncm": "18063220",
+          "cest": "1700301",
+          "valor_total": 33963.0,
+          "valor_icms": 4075.0,
+          "icms_st": 22800.0,
+          "icms_tributado": 27365.0
+        }
+      ]
     }
   ]
 }

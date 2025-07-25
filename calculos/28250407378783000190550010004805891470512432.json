@@ -20,6 +20,39 @@
         "icms_uso_consumo": "R$ 627.27",
         "icms_reducao": "R$ 433.40"
       }
+    },
+    {
+      "data": "2025-07-25T15:29:20",
+      "nota": "28250407378783000190550010004805891470512432",
+      "parametros": {
+        "aliq_interestadual": "12.0",
+        "aliq_interna": "1",
+        "mva_original": "2",
+        "mva_cnae": "3",
+        "difal": "4",
+        "aliq_credito": "5",
+        "aliq_reducao": "2",
+        "considerar_desconto": true,
+        "usar_credito_manual": false
+      },
+      "resultados": {
+        "icms_st": "R$ 0.37",
+        "icms_tributado": "R$ 0.42",
+        "icms_uso_consumo": "R$ 0.18",
+        "icms_reducao": "R$ 0.13"
+      },
+      "produtos": [
+        {
+          "item": "1",
+          "descricao": "PISO CERAMICO 540X540MMHD OLIMPO AD A",
+          "ncm": "69072300",
+          "cest": "1003000",
+          "valor_total": 5.58374,
+          "valor_icms": 67005.0,
+          "icms_st": 37.0,
+          "icms_tributado": 42.0
+        }
+      ]
     }
   ]
 }

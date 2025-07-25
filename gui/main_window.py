@@ -2,9 +2,10 @@
 from PyQt5.QtWidgets import (QMainWindow, QTabWidget, QVBoxLayout, QHBoxLayout, QWidget, 
                             QLabel, QFormLayout, QGroupBox, QPushButton, 
                             QFileDialog, QMessageBox, QScrollArea,
-                            QComboBox, QLineEdit, QDateEdit, QListWidget)
+                            QComboBox, QLineEdit, QDateEdit, QListWidget,
+                            QListWidgetItem)
 
-from PyQt5.QtCore import Qt, QDate
+from PyQt5.QtCore import Qt, QDate, QDateTime
 from PyQt5.QtGui import QIcon
 from gui.calculation_window import CalculationWindow
 from gui.cesta_basica_window import CestaBasicaWindow
@@ -12,9 +13,9 @@ from gui.history_window import HistoryWindow
 from core.models import NotaFiscal
 from core.xml_processor import XMLProcessor
 from core.config_manager import ConfigManager
-import os
-
 from pathlib import Path
+import json
+import os
 
 class MainWindow(QMainWindow):
     def __init__(self):
@@ -77,9 +78,20 @@ class MainWindow(QMainWindow):
         lista_layout = QVBoxLayout()
         lista_group.setLayout(lista_layout)
 
+        # Campo de busca
+        self.txt_busca = QLineEdit()
+        self.txt_busca.setPlaceholderText("Filtrar notas...")
+        self.txt_busca.textChanged.connect(self._filtrar_lista)
+        lista_layout.addWidget(self.txt_busca)
+
         self.lst_notas = QListWidget()
         self.lst_notas.itemDoubleClicked.connect(self.abrir_nota)
         lista_layout.addWidget(self.lst_notas)
+
+        # Botão remover
+        self.btn_remover = QPushButton("Remover selecionado")
+        self.btn_remover.clicked.connect(self._remover_item)
+        lista_layout.addWidget(self.btn_remover)
 
         corpo_layout.addWidget(lista_group, 2)  # 2 = peso maior para lista
 
@@ -125,9 +137,9 @@ class MainWindow(QMainWindow):
         # ====== STATUS BAR ======
         self.statusBar().showMessage("Pronto para carregar NFe")
 
-        # Carrega as notas da pasta padrão
-        self._carregar_notas_pasta()
-
+        # Conexões
+        self.cmb_empresa.currentTextChanged.connect(self._carregar_notas_pasta)
+        self.date_competencia.dateChanged.connect(self._carregar_notas_pasta)
     
     def _load_empresas(self):
         """Carrega a lista de empresas do diretório fiscal"""
@@ -145,10 +157,61 @@ class MainWindow(QMainWindow):
             return
             
         notas_dir = Path(f"Z:/Fiscal/Simples Nacional/{empresa}/notas/{competencia}")
+        calculos_dir = Path("calculos")
+        
+        self.lst_notas.clear()
+        
+        # 1. Carrega XMLs da pasta de notas
         if notas_dir.exists():
-            self.lst_notas.clear()
             for xml_file in notas_dir.glob("*.xml"):
-                self.lst_notas.addItem(xml_file.name)
+                item = QListWidgetItem(f"📄 {xml_file.name}")
+                item.setData(Qt.UserRole, {"tipo": "xml", "path": str(xml_file)})
+                item.setToolTip(f"Nota Fiscal Original\n{xml_file.name}")
+                self.lst_notas.addItem(item)
+        
+        # 2. Carrega cálculos salvos
+        if calculos_dir.exists():
+            for json_file in calculos_dir.glob("*.json"):
+                try:
+                    with open(json_file, 'r', encoding='utf-8') as f:
+                        dados = json.load(f)
+                        if dados.get("calculos"):
+                            ultimo_calculo = dados["calculos"][-1]
+                            emitente = ultimo_calculo.get("emitente", {}).get("nome", "NFe")
+                            data = QDateTime.fromString(ultimo_calculo.get("data", ""), Qt.ISODate).toString("dd/MM/yyyy")
+                            
+                            item = QListWidgetItem(f"📊 {emitente} - {json_file.name}")
+                            item.setData(Qt.UserRole, {"tipo": "calculo", "path": str(json_file)})
+                            item.setToolTip(f"Cálculo Salvo\nEmitente: {emitente}\nData: {data}\nArquivo: {json_file.name}")
+                            self.lst_notas.addItem(item)
+                except Exception as e:
+                    print(f"Erro ao carregar {json_file}: {str(e)}")
+    
+    def _filtrar_lista(self, texto):
+        """Filtra a lista de notas conforme texto digitado"""
+        for i in range(self.lst_notas.count()):
+            item = self.lst_notas.item(i)
+            item.setHidden(texto.lower() not in item.text().lower())
+    
+    def _remover_item(self):
+        """Remove o item selecionado da lista e deleta o arquivo"""
+        item = self.lst_notas.currentItem()
+        if item:
+            resposta = QMessageBox.question(
+                self, 
+                "Confirmar", 
+                "Tem certeza que deseja remover este item permanentemente?",
+                QMessageBox.Yes | QMessageBox.No
+            )
+            
+            if resposta == QMessageBox.Yes:
+                dados = item.data(Qt.UserRole)
+                try:
+                    Path(dados["path"]).unlink()
+                    self.lst_notas.takeItem(self.lst_notas.row(item))
+                    self.statusBar().showMessage("Item removido com sucesso", 3000)
+                except Exception as e:
+                    QMessageBox.critical(self, "Erro", f"Não foi possível remover:\n{str(e)}")
     
     def carregar_nota(self):
         """Carrega um arquivo XML de NFe e atualiza a interface"""
@@ -168,25 +231,53 @@ class MainWindow(QMainWindow):
                 self.statusBar().showMessage(f"NFe {nota.numero} carregada com sucesso", 3000)
                 QMessageBox.information(self, "Sucesso", "NFe processada com sucesso!")
                 
+                # Adiciona à lista se não existir
+                self._adicionar_item_lista(file_path, "xml")
+                
             except Exception as e:
                 self.statusBar().showMessage("Erro ao processar NFe", 3000)
                 QMessageBox.critical(self, "Erro", f"Falha ao processar NFe:\n{str(e)}")
     
+    def _adicionar_item_lista(self, path, tipo):
+        """Adiciona um novo item à lista de notas"""
+        nome_arquivo = Path(path).name
+        
+        if tipo == "xml":
+            for i in range(self.lst_notas.count()):
+                item = self.lst_notas.item(i)
+                if item.data(Qt.UserRole)["path"] == path:
+                    return  # Já existe
+            
+            item = QListWidgetItem(f"📄 {nome_arquivo}")
+            item.setData(Qt.UserRole, {"tipo": "xml", "path": path})
+            self.lst_notas.addItem(item)
+    
     def abrir_nota(self, item):
         """Abre a nota selecionada na lista"""
-        empresa = self.cmb_empresa.currentText()
-        competencia = self.date_competencia.date().toString("MM.yyyy")
-        xml_path = Path(f"Z:/Fiscal/Simples Nacional/{empresa}/notas/{competencia}/{item.text()}")
+        dados = item.data(Qt.UserRole)
         
         try:
-            with open(xml_path, 'r', encoding='utf-8') as f:
-                xml_content = f.read()
-            
-            nota = self.xml_processor.parse_xml(xml_content)
-            self.set_nota(nota)
-            
+            if dados["tipo"] == "xml":
+                # Carrega XML original
+                with open(dados["path"], 'r', encoding='utf-8') as f:
+                    xml_content = f.read()
+                
+                nota = self.xml_processor.parse_xml(xml_content)
+                self.set_nota(nota)
+                self.tabs.setCurrentIndex(0)  # Aba de cálculos
+                
+            elif dados["tipo"] == "calculo":
+                # Carrega cálculo salvo
+                with open(dados["path"], 'r', encoding='utf-8') as f:
+                    dados_calculo = json.load(f)
+                
+                # Cria janela de visualização
+                self.calculation_window = CalculationWindow()
+                self.calculation_window.carregar_dados_salvos(dados_calculo["calculos"][-1])
+                self.calculation_window.show()
+                
         except Exception as e:
-            QMessageBox.critical(self, "Erro", f"Falha ao abrir NFe:\n{str(e)}")
+            QMessageBox.critical(self, "Erro", f"Não foi possível abrir:\n{str(e)}")
     
     def novo_calculo(self):
         """Prepara a interface para um novo cálculo"""

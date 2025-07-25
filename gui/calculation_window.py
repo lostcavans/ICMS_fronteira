@@ -3,7 +3,7 @@ from PyQt5.QtWidgets import (QWidget, QVBoxLayout, QLabel, QFormLayout,
                             QCheckBox, QTableWidget, QTableWidgetItem, 
                             QHeaderView, QMessageBox, QFileDialog)
 from PyQt5.QtCore import Qt, QDateTime
-from core.models import NotaFiscal, Impostos, Produto
+from core.models import NotaFiscal, Impostos, Produto, RegimeTributario
 from core.calculator import ICMSCalculator
 from core.nfe_parser import NotaFiscalParser
 from core.config_manager import ConfigManager
@@ -161,11 +161,7 @@ class CalculationWindow(QWidget):
     
     def carregar_xml(self):
         file_path, _ = QFileDialog.getOpenFileName(
-            self, 
-            "Abrir Nota Fiscal", 
-            "", 
-            "XML Files (*.xml)"
-        )
+            self, "Abrir Nota Fiscal", "", "XML Files (*.xml)")
         if file_path:
             try:
                 with open(file_path, 'r', encoding='utf-8') as file:
@@ -173,17 +169,9 @@ class CalculationWindow(QWidget):
                 
                 nota = NotaFiscalParser.parse_xml(xml_content)
                 self.set_nota(nota)
-                QMessageBox.information(
-                    self, 
-                    "Sucesso", 
-                    "Nota fiscal carregada com sucesso!"
-                )
+                QMessageBox.information(self, "Sucesso", "Nota fiscal carregada com sucesso!")
             except Exception as e:
-                QMessageBox.critical(
-                    self, 
-                    "Erro", 
-                    f"Falha ao carregar XML:\n{str(e)}"
-                )
+                QMessageBox.critical(self, "Erro", f"Falha ao carregar XML:\n{str(e)}")
     
     def set_nota(self, nota: NotaFiscal, agrupar: bool = False):
         self.current_nota = nota
@@ -205,7 +193,7 @@ class CalculationWindow(QWidget):
         self.lbl_vseg.setText(f"R$ {nota.valor_seguro:,.2f}")
         self.lbl_vdesc.setText(f"R$ {nota.valor_desconto:,.2f}")
         self.lbl_vicms.setText(f"R$ {nota.valor_icms:,.2f}")
-        self.lbl_vicmsst.setText(f"R$ 0,00")  # Será calculado
+        self.lbl_vicmsst.setText(f"R$ 0,00")
         
         # Preenche alíquota interestadual
         self.txt_aliq_interestadual.setText(str(nota.aliquota_interestadual))
@@ -219,8 +207,8 @@ class CalculationWindow(QWidget):
             self.table_produtos.setItem(row, 3, QTableWidgetItem(produto.cest or ""))
             self.table_produtos.setItem(row, 4, QTableWidgetItem(f"R$ {produto.valor_total:,.2f}"))
             self.table_produtos.setItem(row, 5, QTableWidgetItem(f"R$ {produto.valor_icms:,.2f}"))
-            self.table_produtos.setItem(row, 6, QTableWidgetItem("R$ 0,00"))  # ST
-            self.table_produtos.setItem(row, 7, QTableWidgetItem("R$ 0,00"))  # Tributado
+            self.table_produtos.setItem(row, 6, QTableWidgetItem("R$ 0,00"))
+            self.table_produtos.setItem(row, 7, QTableWidgetItem("R$ 0,00"))
     
     def alternar_agrupamento(self):
         if self.current_nota:
@@ -232,7 +220,7 @@ class CalculationWindow(QWidget):
             return
             
         try:
-            # Verifica se todos os campos necessários estão preenchidos
+            # Verifica campos obrigatórios
             campos_obrigatorios = [
                 (self.txt_aliq_interestadual, "Alíquota Interestadual"),
                 (self.txt_aliq_interna, "Alíquota Interna"),
@@ -263,7 +251,7 @@ class CalculationWindow(QWidget):
             usar_credito_manual = self.chk_credito.isChecked()
             
             for row in range(self.table_produtos.rowCount()):
-                # Recupera dados do produto da tabela
+                # Recupera dados do produto
                 item = self.table_produtos.item(row, 0)
                 descricao = self.table_produtos.item(row, 1)
                 ncm = self.table_produtos.item(row, 2)
@@ -274,17 +262,17 @@ class CalculationWindow(QWidget):
                 valor_total = float(valor_text.replace("R$", "").replace(".", "").replace(",", ".").strip())
                 valor_icms = float(icms_text.replace("R$", "").replace(".", "").replace(",", ".").strip())
                 
-                # Cria objeto Produto temporário para cálculo
+                # Cria objeto Produto temporário
                 produto = Produto(
                     item=item.text(),
-                    codigo="",  # Adicione um valor padrão ou obtenha do XML
+                    codigo="",
                     descricao=descricao.text(),
                     ncm=ncm.text(),
                     cest=cest.text() if cest else None,
-                    cfop="",  # Adicione conforme necessário
-                    unidade="",  # Adicione conforme necessário
-                    quantidade=0,  # Adicione conforme necessário
-                    valor_unitario=0,  # Adicione conforme necessário
+                    cfop="",
+                    unidade="",
+                    quantidade=0,
+                    valor_unitario=0,
                     valor_total=valor_total,
                     valor_ipi=self.current_nota.valor_ipi,
                     valor_icms=valor_icms,
@@ -311,11 +299,11 @@ class CalculationWindow(QWidget):
                 self.table_produtos.item(row, 7).setText(f"R$ {tributado:,.2f}")
                 total_tributado += tributado
                 
-                # ICMS Uso/Consumo (simplificado)
-                uso_consumo = st * 0.5 if self.current_nota.destinatario_uf == 'PE' else 0
+                # ICMS Uso/Consumo (novo cálculo)
+                uso_consumo = self.calculator.calcular_uso_consumo(produto, impostos)
                 total_uso_consumo += uso_consumo
                 
-                # ICMS Redução (simplificado)
+                # ICMS Redução
                 reducao = tributado * 0.3 if impostos.aliquota_reducao else 0
                 total_reducao += reducao
             
@@ -336,17 +324,13 @@ class CalculationWindow(QWidget):
             return
             
         try:
-            # Verifica se o cálculo foi realizado
             if self.lbl_icms_st.text() == "R$ 0,00":
-                if QMessageBox.question(
-                    self, 
-                    "Confirmação", 
-                    "Parece que o cálculo não foi realizado. Deseja salvar mesmo assim?",
-                    QMessageBox.Yes | QMessageBox.No
-                ) == QMessageBox.No:
+                if QMessageBox.question(self, "Confirmação", 
+                                      "Parece que o cálculo não foi realizado. Deseja salvar mesmo assim?",
+                                      QMessageBox.Yes | QMessageBox.No) == QMessageBox.No:
                     return
             
-            # Coletar dados dos produtos da tabela
+            # Coletar dados dos produtos
             produtos = []
             for row in range(self.table_produtos.rowCount()):
                 item = self.table_produtos.item(row, 0)
@@ -376,6 +360,16 @@ class CalculationWindow(QWidget):
             calculo = {
                 "data": QDateTime.currentDateTime().toString(Qt.ISODate),
                 "nota": self.current_nota.chave,
+                "numero": self.current_nota.numero,
+                "emitente": {
+                    "nome": self.current_nota.emitente_nome,
+                    "cnpj": self.current_nota.emitente_cnpj,
+                    "uf": self.current_nota.emitente_uf
+                },
+                "destinatario": {
+                    "nome": self.current_nota.destinatario_nome,
+                    "uf": self.current_nota.destinatario_uf
+                },
                 "parametros": {
                     "aliq_interestadual": self.txt_aliq_interestadual.text(),
                     "aliq_interna": self.txt_aliq_interna.text(),
@@ -396,7 +390,7 @@ class CalculationWindow(QWidget):
                 "produtos": produtos
             }
             
-            # Cria diretório se não existir
+            # Salva em arquivo
             calculos_dir = Path("calculos")
             calculos_dir.mkdir(exist_ok=True)
             
@@ -443,3 +437,50 @@ class CalculationWindow(QWidget):
         
         self.chk_desconto.setChecked(True)
         self.chk_credito.setChecked(False)
+    
+    def carregar_dados_salvos(self, dados_calculo):
+        """Carrega dados de um cálculo salvo anteriormente"""
+        try:
+            # Cria objeto NotaFiscal básico
+            nota = NotaFiscal(
+                chave=dados_calculo.get("nota", ""),
+                numero=dados_calculo.get("numero", ""),
+                emitente_nome=dados_calculo.get("emitente", {}).get("nome", ""),
+                emitente_cnpj=dados_calculo.get("emitente", {}).get("cnpj", ""),
+                emitente_uf=dados_calculo.get("emitente", {}).get("uf", ""),
+                destinatario_nome=dados_calculo.get("destinatario", {}).get("nome", ""),
+                destinatario_uf=dados_calculo.get("destinatario", {}).get("uf", ""),
+                emitente_regime=RegimeTributario.NORMAL,
+                produtos=[],
+                valor_total=0,
+                valor_frete=0,
+                valor_seguro=0,
+                valor_desconto=0,
+                valor_ipi=0,
+                valor_icms=0,
+                aliquota_interestadual=0
+            )
+            
+            self.set_nota(nota)
+            
+            # Preenche parâmetros
+            params = dados_calculo.get("parametros", {})
+            self.txt_aliq_interestadual.setText(str(params.get("aliq_interestadual", "")))
+            self.txt_aliq_interna.setText(str(params.get("aliq_interna", "")))
+            self.txt_mva_original.setText(str(params.get("mva_original", "")))
+            self.txt_mva_cnae.setText(str(params.get("mva_cnae", "")))
+            self.txt_difal.setText(str(params.get("difal", "")))
+            self.txt_aliq_credito.setText(str(params.get("aliq_credito", "")))
+            self.txt_aliq_reducao.setText(str(params.get("aliq_reducao", "")))
+            self.chk_desconto.setChecked(params.get("considerar_desconto", True))
+            self.chk_credito.setChecked(params.get("usar_credito_manual", False))
+            
+            # Preenche resultados
+            results = dados_calculo.get("resultados", {})
+            self.lbl_icms_st.setText(results.get("icms_st", "R$ 0,00"))
+            self.lbl_icms_tributado.setText(results.get("icms_tributado", "R$ 0,00"))
+            self.lbl_icms_uso_consumo.setText(results.get("icms_uso_consumo", "R$ 0,00"))
+            self.lbl_icms_reducao.setText(results.get("icms_reducao", "R$ 0,00"))
+            
+        except Exception as e:
+            QMessageBox.critical(self, "Erro", f"Falha ao carregar cálculo:\n{str(e)}")
