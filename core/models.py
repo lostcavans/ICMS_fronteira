@@ -20,10 +20,11 @@ class Produto(BaseModel):
     valor_total: float
     valor_ipi: float = 0.0
     valor_icms: float = 0.0
-    valor_frete: float = 0.0  # Adicionado
-    valor_seguro: float = 0.0  # Adicionado
-    valor_desconto: float = 0.0  # Adicionado se necessário
-    
+    valor_frete: float = 0.0
+    valor_seguro: float = 0.0
+    valor_desconto: float = 0.0
+    aliquota_icms: Optional[float] = None
+
 class Impostos(BaseModel):
     aliquota_interna: float = Field(20.5, description="Alíquota interna do ICMS (%)")
     aliquota_interestadual: float = Field(..., description="Alíquota interestadual (%)")
@@ -33,14 +34,12 @@ class Impostos(BaseModel):
     aliquota_credito: Optional[float] = Field(None, description="Alíquota de crédito (%)")
     aliquota_reducao: Optional[float] = Field(None, description="Alíquota de redução (%)")
 
-
-
 class NotaFiscal(BaseModel):
     chave: str
     numero: str
     emitente_cnpj: str
     emitente_nome: str
-    destinatario_nome: Optional[str] = None
+    destinatario_nome: str
     emitente_regime: RegimeTributario
     emitente_uf: str
     destinatario_uf: str

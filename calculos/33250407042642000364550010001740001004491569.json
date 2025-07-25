@@ -167,6 +167,49 @@
         "icms_uso_consumo": "",
         "icms_reducao": ""
       }
+    },
+    {
+      "data": "2025-07-14T15:38:30",
+      "nota": "33250407042642000364550010001740001004491569",
+      "parametros": {
+        "aliq_interestadual": "7.0",
+        "aliq_interna": "20.5",
+        "mva_original": "1",
+        "mva_cnae": "2",
+        "difal": "3",
+        "aliq_credito": "4",
+        "aliq_reducao": "5",
+        "considerar_desconto": true,
+        "usar_credito_manual": false
+      },
+      "resultados": {
+        "icms_st": "R$ 24,348.36",
+        "icms_tributado": "R$ 26,470.92",
+        "icms_uso_consumo": "R$ 12,174.18",
+        "icms_reducao": "R$ 7,941.28"
+      },
+      "produtos": [
+        {
+          "item": "1",
+          "descricao": "J. BEEF PEITO 6 X 5",
+          "ncm": "02102000",
+          "cest": "1708301",
+          "valor_total": 98.94,
+          "valor_icms": 6.9258,
+          "icms_st": 23.61791,
+          "icms_tributado": 25.6768
+        },
+        {
+          "item": "2",
+          "descricao": "J. BEEF PEITO 1 X 30",
+          "ncm": "02102000",
+          "cest": "1708301",
+          "valor_total": 3.06,
+          "valor_icms": 21420.0,
+          "icms_st": 73045.0,
+          "icms_tributado": 79413.0
+        }
+      ]
     }
   ]
 }

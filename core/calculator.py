@@ -1,4 +1,3 @@
-# calculator.py
 from .models import *
 from typing import Optional
 from core.models import Impostos, Produto, RegimeTributario
@@ -16,17 +15,13 @@ class ICMSCalculator:
     @staticmethod
     def calcular_icms_st(produto: Produto, impostos: Impostos, regime: RegimeTributario, considerar_desconto: bool = True) -> float:
         """Calcula o ICMS ST conforme regime tributário"""
-        # Valores com fallback para 0 se não existirem
-        valor_frete = getattr(produto, 'valor_frete', 0.0)
-        valor_seguro = getattr(produto, 'valor_seguro', 0.0)
-        
         base_st = (produto.valor_total + 
                   produto.valor_ipi + 
-                  valor_frete + 
-                  valor_seguro)
+                  produto.valor_frete + 
+                  produto.valor_seguro)
         
         if considerar_desconto:
-            base_st -= getattr(produto, 'valor_desconto', 0.0)
+            base_st -= produto.valor_desconto
         
         if regime == RegimeTributario.NORMAL:
             mva_ajustada = ICMSCalculator.calcular_mva_ajustada(impostos)
@@ -42,9 +37,10 @@ class ICMSCalculator:
     @staticmethod
     def calcular_icms_tributado(produto: Produto, impostos: Impostos, regime: RegimeTributario, usar_credito_manual: bool = False) -> float:
         """Calcula o ICMS tributado conforme regime"""
-        base = (produto.valor_total + produto.valor_ipi + 
-               getattr(produto, 'valor_frete', 0.0) + 
-               getattr(produto, 'valor_seguro', 0.0))
+        base = (produto.valor_total + 
+               produto.valor_ipi + 
+               produto.valor_frete + 
+               produto.valor_seguro)
         
         if regime in [RegimeTributario.SIMPLES, RegimeTributario.SIMPLES_EXCEDENTE]:
             if impostos.difal:
@@ -59,15 +55,22 @@ class ICMSCalculator:
             
     @staticmethod
     def calcular_icms_destacado(produto: Produto, impostos: Impostos, considerar_desconto: bool) -> float:
-        """Calcula o ICMS destacado considerando benefícios fiscais"""
+        """Calcula o ICMS destacado considerando benefícios fiscais e a regra do menor valor"""
         base_calculo = produto.valor_total
         if considerar_desconto:
-            base_calculo -= getattr(produto, 'valor_desconto', 0.0)
+            base_calculo -= produto.valor_desconto
         
-        # Ordem de prioridade dos benefícios fiscais
+        # Calcula ambos os valores
+        valor_por_aliquota = base_calculo * (impostos.aliquota_interestadual/100)
+        valor_picms = produto.valor_icms
+        
+        # Aplica a regra do menor valor
+        icms_destacado = min(valor_por_aliquota, valor_picms)
+        
+        # Aplica benefícios fiscais se existirem
         if impostos.aliquota_reducao and impostos.aliquota_reducao > 0:
-            return base_calculo * (impostos.aliquota_reducao/100) * (impostos.aliquota_interestadual/100)
+            return icms_destacado * (impostos.aliquota_reducao/100)
         elif impostos.aliquota_credito and impostos.aliquota_credito > 0:
-            return base_calculo * (impostos.aliquota_credito/100)
-        else:
-            return base_calculo * (impostos.aliquota_interestadual/100)
+            return icms_destacado * (impostos.aliquota_credito/100)
+        
+        return icms_destacado

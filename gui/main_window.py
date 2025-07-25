@@ -1,8 +1,9 @@
 # main_window.py
-from PyQt5.QtWidgets import (QMainWindow, QTabWidget, QVBoxLayout, QWidget, 
+from PyQt5.QtWidgets import (QMainWindow, QTabWidget, QVBoxLayout, QHBoxLayout, QWidget, 
                             QLabel, QFormLayout, QGroupBox, QPushButton, 
-                            QFileDialog, QMessageBox, QScrollArea, QVBoxLayout,
+                            QFileDialog, QMessageBox, QScrollArea,
                             QComboBox, QLineEdit, QDateEdit, QListWidget)
+
 from PyQt5.QtCore import Qt, QDate
 from PyQt5.QtGui import QIcon
 from gui.calculation_window import CalculationWindow
@@ -12,11 +13,13 @@ from core.models import NotaFiscal
 from core.xml_processor import XMLProcessor
 from core.config_manager import ConfigManager
 import os
+
 from pathlib import Path
 
 class MainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
+        
         self.current_nota = None
         self.xml_processor = XMLProcessor()
         self.config = ConfigManager()
@@ -30,87 +33,101 @@ class MainWindow(QMainWindow):
         # Widget central
         central_widget = QWidget()
         self.setCentralWidget(central_widget)
-        main_layout = QVBoxLayout()
-        central_widget.setLayout(main_layout)
-        
-        # Barra superior com seletores
-        top_bar = QWidget()
-        top_layout = QFormLayout()
-        top_bar.setLayout(top_layout)
-        
-        # Seleção de empresa
+        main_layout = QVBoxLayout(central_widget)
+
+        # ====== TOPO: FILTROS ======
+        filtros_group = QGroupBox("Filtros")
+        filtros_layout = QHBoxLayout()
+        filtros_group.setLayout(filtros_layout)
+
+        # Empresa
         self.cmb_empresa = QComboBox()
         self.cmb_empresa.setEditable(True)
         self.cmb_empresa.setPlaceholderText("Selecione a empresa")
-        top_layout.addRow("Empresa:", self.cmb_empresa)
-        
-        # Seleção de ano e competência
+        self.cmb_empresa.setMaximumWidth(250)
+
+        # Ano
         self.txt_ano = QLineEdit(QDate.currentDate().toString("yyyy"))
-        self.txt_ano.setMaximumWidth(60)
-        
+        self.txt_ano.setMaximumWidth(80)
+
+        # Competência
         self.date_competencia = QDateEdit()
         self.date_competencia.setDisplayFormat("MM/yyyy")
         self.date_competencia.setDate(QDate.currentDate())
-        
-        competencia_layout = QVBoxLayout()
-        competencia_layout.addWidget(QLabel("Ano:"))
-        competencia_layout.addWidget(self.txt_ano)
-        competencia_layout.addSpacing(20)
-        competencia_layout.addWidget(QLabel("Competência:"))
-        competencia_layout.addWidget(self.date_competencia)
-        competencia_layout.addStretch()
-        
-        top_layout.addRow(competencia_layout)
-        main_layout.addWidget(top_bar)
-        
+        self.date_competencia.setMaximumWidth(100)
+
+        # Adiciona ao layout
+        filtros_layout.addWidget(QLabel("Empresa:"))
+        filtros_layout.addWidget(self.cmb_empresa)
+        filtros_layout.addSpacing(20)
+        filtros_layout.addWidget(QLabel("Ano:"))
+        filtros_layout.addWidget(self.txt_ano)
+        filtros_layout.addSpacing(20)
+        filtros_layout.addWidget(QLabel("Competência:"))
+        filtros_layout.addWidget(self.date_competencia)
+        filtros_layout.addStretch()
+
+        main_layout.addWidget(filtros_group)
+
+        # ====== CORPO PRINCIPAL ======
+        corpo_layout = QHBoxLayout()
+
         # Lista de notas fiscais
+        lista_group = QGroupBox("Notas Fiscais")
+        lista_layout = QVBoxLayout()
+        lista_group.setLayout(lista_layout)
+
         self.lst_notas = QListWidget()
         self.lst_notas.itemDoubleClicked.connect(self.abrir_nota)
-        main_layout.addWidget(QLabel("Notas Fiscais:"))
-        main_layout.addWidget(self.lst_notas)
-        
-        # Barra de botões
-        btn_bar = QWidget()
-        btn_layout = QVBoxLayout()
-        btn_bar.setLayout(btn_layout)
-        
+        lista_layout.addWidget(self.lst_notas)
+
+        corpo_layout.addWidget(lista_group, 2)  # 2 = peso maior para lista
+
+        # Botões
+        botoes_group = QGroupBox("Ações")
+        botoes_layout = QVBoxLayout()
+        botoes_group.setLayout(botoes_layout)
+
         self.btn_carregar = QPushButton(QIcon(":/icons/open.png"), " Carregar NFe")
         self.btn_carregar.clicked.connect(self.carregar_nota)
-        
+
         self.btn_novo = QPushButton(QIcon(":/icons/new.png"), " Novo Cálculo")
         self.btn_novo.clicked.connect(self.novo_calculo)
-        
+
         self.btn_historico = QPushButton(QIcon(":/icons/history.png"), " Ver Histórico")
         self.btn_historico.clicked.connect(self.ver_historico)
-        
+
         self.btn_limpar = QPushButton(QIcon(":/icons/clear.png"), " Limpar")
         self.btn_limpar.clicked.connect(self.limpar_dados)
-        
-        btn_layout.addWidget(self.btn_carregar)
-        btn_layout.addWidget(self.btn_novo)
-        btn_layout.addWidget(self.btn_historico)
-        btn_layout.addWidget(self.btn_limpar)
-        btn_layout.addStretch()
-        
-        main_layout.addWidget(btn_bar)
-        
-        # Abas principais
+
+        botoes_layout.addWidget(self.btn_carregar)
+        botoes_layout.addWidget(self.btn_novo)
+        botoes_layout.addWidget(self.btn_historico)
+        botoes_layout.addWidget(self.btn_limpar)
+        botoes_layout.addStretch()
+
+        corpo_layout.addWidget(botoes_group, 1)  # peso menor para botões
+
+        main_layout.addLayout(corpo_layout)
+
+        # ====== ABAS ======
         self.tabs = QTabWidget()
         self.calculation_tab = CalculationWindow()
         self.cesta_basica_tab = CestaBasicaWindow()
         self.history_tab = HistoryWindow()
-        
+
         self.tabs.addTab(self.calculation_tab, "Cálculos ICMS")
         self.tabs.addTab(self.cesta_basica_tab, "Cesta Básica")
         self.tabs.addTab(self.history_tab, "Histórico")
-        
+
         main_layout.addWidget(self.tabs)
-        
-        # Status bar
+
+        # ====== STATUS BAR ======
         self.statusBar().showMessage("Pronto para carregar NFe")
-        
+
         # Carrega as notas da pasta padrão
         self._carregar_notas_pasta()
+
     
     def _load_empresas(self):
         """Carrega a lista de empresas do diretório fiscal"""

@@ -1,4 +1,3 @@
-# history_window.py
 from PyQt5.QtWidgets import (QWidget, QVBoxLayout, QTableWidget, QTableWidgetItem, 
                             QHeaderView, QPushButton, QHBoxLayout, QMessageBox, 
                             QMenu, QAction, QFileDialog, QTextEdit, QDialog, 
@@ -40,6 +39,7 @@ class DetalhesCalculoDialog(QDialog):
             "Item", "Descrição", "NCM", "CEST", "Valor", 
             "ICMS", "ST", "Tributado"
         ])
+        self.table_produtos.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)
         produtos_layout.addWidget(self.table_produtos)
         tab_produtos.setLayout(produtos_layout)
         
@@ -60,21 +60,27 @@ class DetalhesCalculoDialog(QDialog):
         <table border="1" cellpadding="5">
             <tr>
                 <td><b>Alíquota Interestadual:</b></td>
-                <td>{calculo['parametros'].get('aliq_interestadual', '')}%</td>
+                <td>{calculo['parametros'].get('aliq_interestadual', 'N/A')}%</td>
                 <td><b>Alíquota Interna:</b></td>
-                <td>{calculo['parametros'].get('aliq_interna', '')}%</td>
+                <td>{calculo['parametros'].get('aliq_interna', 'N/A')}%</td>
             </tr>
             <tr>
                 <td><b>MVA Original:</b></td>
-                <td>{calculo['parametros'].get('mva_original', '')}%</td>
+                <td>{calculo['parametros'].get('mva_original', 'N/A')}%</td>
                 <td><b>MVA CNAE:</b></td>
-                <td>{calculo['parametros'].get('mva_cnae', '')}%</td>
+                <td>{calculo['parametros'].get('mva_cnae', 'N/A')}%</td>
             </tr>
             <tr>
                 <td><b>DIFAL:</b></td>
-                <td>{calculo['parametros'].get('difal', '')}%</td>
+                <td>{calculo['parametros'].get('difal', 'N/A')}%</td>
                 <td><b>Crédito ICMS:</b></td>
-                <td>{calculo['parametros'].get('aliq_credito', '')}%</td>
+                <td>{calculo['parametros'].get('aliq_credito', 'N/A')}%</td>
+            </tr>
+            <tr>
+                <td><b>Considerar Desconto:</b></td>
+                <td>{'Sim' if calculo['parametros'].get('considerar_desconto', False) else 'Não'}</td>
+                <td><b>Usar Crédito Manual:</b></td>
+                <td>{'Sim' if calculo['parametros'].get('usar_credito_manual', False) else 'Não'}</td>
             </tr>
         </table>
         
@@ -82,15 +88,15 @@ class DetalhesCalculoDialog(QDialog):
         <table border="1" cellpadding="5">
             <tr>
                 <td><b>ICMS ST:</b></td>
-                <td>{calculo['resultados'].get('icms_st', '')}</td>
+                <td>{calculo['resultados'].get('icms_st', 'N/A')}</td>
                 <td><b>ICMS Tributado:</b></td>
-                <td>{calculo['resultados'].get('icms_tributado', '')}</td>
+                <td>{calculo['resultados'].get('icms_tributado', 'N/A')}</td>
             </tr>
             <tr>
                 <td><b>ICMS Uso/Consumo:</b></td>
-                <td>{calculo['resultados'].get('icms_uso_consumo', '')}</td>
+                <td>{calculo['resultados'].get('icms_uso_consumo', 'N/A')}</td>
                 <td><b>ICMS Redução:</b></td>
-                <td>{calculo['resultados'].get('icms_reducao', '')}</td>
+                <td>{calculo['resultados'].get('icms_reducao', 'N/A')}</td>
             </tr>
         </table>
         """
@@ -99,14 +105,21 @@ class DetalhesCalculoDialog(QDialog):
     def preencher_produtos(self, produtos):
         self.table_produtos.setRowCount(len(produtos))
         for row, produto in enumerate(produtos):
-            self.table_produtos.setItem(row, 0, QTableWidgetItem(produto.get('item', '')))
+            self.table_produtos.setItem(row, 0, QTableWidgetItem(str(produto.get('item', ''))))
             self.table_produtos.setItem(row, 1, QTableWidgetItem(produto.get('descricao', '')))
             self.table_produtos.setItem(row, 2, QTableWidgetItem(produto.get('ncm', '')))
             self.table_produtos.setItem(row, 3, QTableWidgetItem(produto.get('cest', '')))
-            self.table_produtos.setItem(row, 4, QTableWidgetItem(f"R$ {produto.get('valor_total', 0):,.2f}"))
-            self.table_produtos.setItem(row, 5, QTableWidgetItem(f"R$ {produto.get('valor_icms', 0):,.2f}"))
-            self.table_produtos.setItem(row, 6, QTableWidgetItem(f"R$ {produto.get('icms_st', 0):,.2f}"))
-            self.table_produtos.setItem(row, 7, QTableWidgetItem(f"R$ {produto.get('icms_tributado', 0):,.2f}"))
+            
+            # Formata os valores monetários
+            valor_total = produto.get('valor_total', 0)
+            valor_icms = produto.get('valor_icms', 0)
+            icms_st = produto.get('icms_st', 0)
+            icms_tributado = produto.get('icms_tributado', 0)
+            
+            self.table_produtos.setItem(row, 4, QTableWidgetItem(f"R$ {valor_total:,.2f}"))
+            self.table_produtos.setItem(row, 5, QTableWidgetItem(f"R$ {valor_icms:,.2f}"))
+            self.table_produtos.setItem(row, 6, QTableWidgetItem(f"R$ {icms_st:,.2f}"))
+            self.table_produtos.setItem(row, 7, QTableWidgetItem(f"R$ {icms_tributado:,.2f}"))
 
 class HistoryWindow(QWidget):
     def __init__(self):
@@ -133,16 +146,21 @@ class HistoryWindow(QWidget):
         self.btn_limpar = QPushButton(QIcon(":/icons/clear.png"), " Limpar")
         self.btn_limpar.clicked.connect(self.limpar_dados)
         
+        # Botão de teste (pode ser removido após depuração)
+        self.btn_testar = QPushButton("Testar Dados")
+        self.btn_testar.clicked.connect(self.testar_dados)
+        
         tool_layout.addWidget(self.btn_atualizar)
         tool_layout.addWidget(self.btn_exportar)
         tool_layout.addWidget(self.btn_limpar)
+        tool_layout.addWidget(self.btn_testar)
         tool_layout.addStretch()
         
         self.layout.addWidget(tool_bar)
         
         # Tabela de histórico
         self.table_history = QTableWidget()
-        self.table_history.setColumnCount(8)  # Coluna adicional para detalhes
+        self.table_history.setColumnCount(8)
         self.table_history.setHorizontalHeaderLabels([
             "Data/Hora", "Tipo", "ICMS ST", "ICMS Tributado", 
             "ICMS Uso/Consumo", "ICMS Redução", "Produtos", "Ações"
@@ -156,6 +174,8 @@ class HistoryWindow(QWidget):
     def set_nota(self, nota):
         """Armazena a nota atual para referência nos relatórios"""
         self.current_nota = nota
+        self.current_chave = nota.chave if nota else None
+        self.carregar_historico(self.current_chave)
     
     def mostrar_menu_contexto(self, pos):
         menu = QMenu()
@@ -176,20 +196,30 @@ class HistoryWindow(QWidget):
         self.table_history.setRowCount(0)
         
         if not chave_nota:
+            QMessageBox.warning(self, "Aviso", "Nenhuma chave de nota informada")
             return
             
         arquivo = Path("calculos") / f"{chave_nota}.json"
         
         if not arquivo.exists():
+            QMessageBox.warning(self, "Aviso", f"Arquivo de histórico não encontrado: {arquivo}")
             return
-            
+        
         try:
             with open(arquivo, 'r', encoding='utf-8') as f:
                 dados = json.load(f)
             
+            if not dados.get("calculos"):
+                QMessageBox.warning(self, "Aviso", "Nenhum cálculo encontrado no histórico")
+                return
+            
             self.table_history.setRowCount(len(dados["calculos"]))
             
             for row, calculo in enumerate(dados["calculos"]):
+                # Verifica se todos os campos necessários existem
+                if not all(k in calculo for k in ["data", "resultados"]):
+                    continue
+                
                 # Colunas básicas
                 self.table_history.setItem(row, 0, QTableWidgetItem(calculo["data"]))
                 self.table_history.setItem(row, 1, QTableWidgetItem("Completo"))
@@ -224,8 +254,18 @@ class HistoryWindow(QWidget):
         except Exception as e:
             QMessageBox.critical(self, "Erro", f"Falha ao carregar histórico:\n{str(e)}")
     
-    def ver_detalhes(self, row):
+    def ver_detalhes(self, row=None):
+        if row is None:
+            # Se chamado pelo menu de contexto, pega a linha selecionada
+            row = self.table_history.currentRow()
+        
+        if row < 0:
+            return
+            
         item = self.table_history.item(row, 0)
+        if not item:
+            return
+            
         chave = self.current_chave
         data = item.text()
         
@@ -240,9 +280,61 @@ class HistoryWindow(QWidget):
             if calculo:
                 dialog = DetalhesCalculoDialog(calculo, self)
                 dialog.exec_()
+            else:
+                QMessageBox.warning(self, "Aviso", "Cálculo não encontrado no histórico")
         
         except Exception as e:
             QMessageBox.critical(self, "Erro", f"Falha ao exibir detalhes:\n{str(e)}")
+    
+    def exportar_calculo(self, row=None):
+        if row is None:
+            # Se chamado pelo menu de contexto, pega a linha selecionada
+            row = self.table_history.currentRow()
+        
+        if row < 0:
+            return
+            
+        item = self.table_history.item(row, 0)
+        if not item:
+            return
+            
+        chave = self.current_chave
+        data = item.text()
+        
+        arquivo = Path("calculos") / f"{chave}.json"
+        
+        try:
+            with open(arquivo, 'r', encoding='utf-8') as f:
+                dados = json.load(f)
+            
+            calculo = next((c for c in dados["calculos"] if c["data"] == data), None)
+            
+            if not calculo:
+                QMessageBox.warning(self, "Aviso", "Cálculo não encontrado")
+                return
+                
+            options = QFileDialog.Options()
+            file_path, _ = QFileDialog.getSaveFileName(
+                self, f"Exportar Cálculo {data}", "",
+                "PDF Files (*.pdf);;Excel Files (*.xlsx);;JSON Files (*.json)",
+                options=options
+            )
+            
+            if not file_path:
+                return
+                
+            if file_path.endswith('.pdf'):
+                self._exportar_pdf_calculo(file_path, calculo)
+            elif file_path.endswith('.xlsx'):
+                self._exportar_excel_calculo(file_path, calculo)
+            elif file_path.endswith('.json'):
+                with open(file_path, 'w', encoding='utf-8') as f:
+                    json.dump(calculo, f, indent=2, ensure_ascii=False)
+            
+            QMessageBox.information(self, "Sucesso", "Cálculo exportado com sucesso!")
+        
+        except Exception as e:
+            QMessageBox.critical(self, "Erro", f"Falha ao exportar cálculo:\n{str(e)}")
     
     def exportar_completo(self):
         """Exporta todo o histórico da nota"""
@@ -277,46 +369,6 @@ class HistoryWindow(QWidget):
         
         except Exception as e:
             QMessageBox.critical(self, "Erro", f"Falha ao exportar histórico:\n{str(e)}")
-    
-    def exportar_calculo(self, row):
-        """Exporta um cálculo específico"""
-        item = self.table_history.item(row, 0)
-        chave = self.current_chave
-        data = item.text()
-        
-        arquivo = Path("calculos") / f"{chave}.json"
-        
-        try:
-            with open(arquivo, 'r', encoding='utf-8') as f:
-                dados = json.load(f)
-            
-            calculo = next((c for c in dados["calculos"] if c["data"] == data), None)
-            
-            if not calculo:
-                return
-                
-            options = QFileDialog.Options()
-            file_path, _ = QFileDialog.getSaveFileName(
-                self, f"Exportar Cálculo {data}", "",
-                "PDF Files (*.pdf);;Excel Files (*.xlsx);;JSON Files (*.json)",
-                options=options
-            )
-            
-            if not file_path:
-                return
-                
-            if file_path.endswith('.pdf'):
-                self._exportar_pdf_calculo(file_path, calculo)
-            elif file_path.endswith('.xlsx'):
-                self._exportar_excel_calculo(file_path, calculo)
-            elif file_path.endswith('.json'):
-                with open(file_path, 'w', encoding='utf-8') as f:
-                    json.dump(calculo, f, indent=2, ensure_ascii=False)
-            
-            QMessageBox.information(self, "Sucesso", "Cálculo exportado com sucesso!")
-        
-        except Exception as e:
-            QMessageBox.critical(self, "Erro", f"Falha ao exportar cálculo:\n{str(e)}")
     
     def _exportar_pdf_completo(self, file_path, dados):
         pdf = FPDF()
@@ -446,7 +498,19 @@ class HistoryWindow(QWidget):
             }, {
                 "Parâmetro": "Alíquota Interna",
                 "Valor": f"{calculo['parametros']['aliq_interna']}%"
-            }]  # Adicione todos os parâmetros
+            }, {
+                "Parâmetro": "MVA Original",
+                "Valor": f"{calculo['parametros']['mva_original']}%"
+            }, {
+                "Parâmetro": "MVA CNAE",
+                "Valor": f"{calculo['parametros']['mva_cnae']}%"
+            }, {
+                "Parâmetro": "Considerar Desconto",
+                "Valor": "Sim" if calculo['parametros'].get('considerar_desconto', False) else "Não"
+            }, {
+                "Parâmetro": "Usar Crédito Manual",
+                "Valor": "Sim" if calculo['parametros'].get('usar_credito_manual', False) else "Não"
+            }]
             
             pd.DataFrame(parametros_data).to_excel(
                 writer, 
@@ -461,7 +525,13 @@ class HistoryWindow(QWidget):
             }, {
                 "Tipo": "ICMS Tributado",
                 "Valor": calculo["resultados"]["icms_tributado"]
-            }]  # Adicione todos os resultados
+            }, {
+                "Tipo": "ICMS Uso/Consumo",
+                "Valor": calculo["resultados"]["icms_uso_consumo"]
+            }, {
+                "Tipo": "ICMS Redução",
+                "Valor": calculo["resultados"]["icms_reducao"]
+            }]
             
             pd.DataFrame(resultados_data).to_excel(
                 writer, 
@@ -493,6 +563,48 @@ class HistoryWindow(QWidget):
     def _exportar_json(self, file_path, dados):
         with open(file_path, 'w', encoding='utf-8') as f:
             json.dump(dados, f, indent=2, ensure_ascii=False)
+    
+    def testar_dados(self):
+        """Método para depuração - verifica os dados salvos"""
+        if not self.current_chave:
+            QMessageBox.warning(self, "Erro", "Nenhuma nota selecionada")
+            return
+            
+        resultado = self.verificar_dados(self.current_chave)
+        QMessageBox.information(self, "Verificação", resultado)
+    
+    def verificar_dados(self, chave_nota):
+        arquivo = Path("calculos") / f"{chave_nota}.json"
+        
+        if not arquivo.exists():
+            return "Arquivo não existe"
+        
+        try:
+            with open(arquivo, 'r', encoding='utf-8') as f:
+                dados = json.load(f)
+                
+            if not dados:
+                return "Arquivo vazio"
+                
+            if "calculos" not in dados:
+                return "Estrutura inválida - falta chave 'calculos'"
+                
+            if not dados["calculos"]:
+                return "Nenhum cálculo encontrado"
+                
+            primeiro_calculo = dados["calculos"][0]
+            
+            if "produtos" not in primeiro_calculo:
+                return "Cálculo não contém produtos"
+                
+            if not primeiro_calculo["produtos"]:
+                return "Lista de produtos vazia"
+                
+            return f"Dados OK - {len(dados['calculos'])} cálculos, {len(primeiro_calculo['produtos'])} produtos"
+
+            
+        except Exception as e:
+            return f"Erro ao ler arquivo: {str(e)}"
     
     def limpar_dados(self):
         self.current_chave = None

@@ -1,0 +1,37 @@
+{
+  "calculos": [
+    {
+      "data": "2025-07-25T14:28:15",
+      "nota": "35250658526047000173550010001271401741019248",
+      "parametros": {
+        "aliq_interestadual": "7.0",
+        "aliq_interna": "1",
+        "mva_original": "2",
+        "mva_cnae": "3",
+        "difal": "4",
+        "aliq_credito": "5",
+        "aliq_reducao": "6",
+        "considerar_desconto": true,
+        "usar_credito_manual": false
+      },
+      "resultados": {
+        "icms_st": "R$ 2.16",
+        "icms_tributado": "R$ 2.34",
+        "icms_uso_consumo": "R$ 1.08",
+        "icms_reducao": "R$ 0.70"
+      },
+      "produtos": [
+        {
+          "item": "1",
+          "descricao": "CABO RETO ENGATE RAPIDO PROXIMAL",
+          "ncm": "90189099",
+          "cest": "",
+          "valor_total": 1.26179,
+          "valor_icms": 10402.0,
+          "icms_st": 216.0,
+          "icms_tributado": 234.0
+        }
+      ]
+    }
+  ]
+}
